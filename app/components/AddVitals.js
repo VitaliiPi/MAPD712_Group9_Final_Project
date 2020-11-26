@@ -96,19 +96,19 @@ export default function AddVitals({navigation, route}) {
   };
 
   const deleteVital = () => {
-    if (vital._id !== undefined){
+    if (vital._id !== undefined) {
       fetch(
         url + `/patients/${route.params.patient._id}/records/${vital._id}`,
         {
-        method: 'DELETE',
-      })
-      .catch((error) => {
+          method: 'DELETE',
+        },
+      ).catch((error) => {
         errorMessage = error.message;
         Toast.show(errorMessage, Toast.LONG);
       });
     }
-    navigation.navigate('ViewPatient', {patient: route.params.patient})
-  }
+    navigation.navigate('ViewPatient', {patient: route.params.patient});
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

@@ -56,7 +56,7 @@ export default function ViewPatients({navigation, route}) {
 
   const deleteItem = (item, index) => {
     console.log('delete ' + item._id);
-    
+
     fetch(url + `/patients/${item._id}`, {
       method: 'DELETE',
     })
@@ -199,7 +199,8 @@ function ListItem(props) {
   };
 
   return (
-    <Swipeable renderLeftActions={leftSwipe}
+    <Swipeable
+      renderLeftActions={leftSwipe}
       ref={(ref) => (row[props.index] = ref)}>
       <TouchableOpacity
         key={props.item.id}

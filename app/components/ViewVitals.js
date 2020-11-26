@@ -34,7 +34,7 @@ export default function ViewVitals({navigation, route}) {
 
   useEffect(() => {
     const backAction = () => {
-      navigation.navigate('ViewPatient', {patient: route.params.patient})
+      navigation.navigate('ViewPatient', {patient: route.params.patient});
       return true;
     };
     const backHandler = BackHandler.addEventListener(

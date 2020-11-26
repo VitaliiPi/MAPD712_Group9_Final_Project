@@ -50,7 +50,7 @@ export default function AddPatient({navigation, route}) {
       user_id: route.params.user_id,
       in_critical_condition: in_critical_condition,
     };
-    
+
     fetch(url + `/patients${url_id}`, {
       method: method,
       headers: {
