@@ -8,38 +8,34 @@ import {
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
-var url = 'https://patientrecordsgroup.herokuapp.com';
+var url = 'http://127.0.0.1:3009';
 
 //screen for signing in
 export default function SignIn({navigation}) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [checking, setChecking] = useState(false);
+
   var errorMessage = '';
 
   const chackInputAndSignIn = () => {
-    if (!checking) {
-      setChecking(true);
-      fetch(url + `/users/${username}/${password}`)
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.validated === 'true') {
-            errorMessage = 'good';
-            console.log(errorMessage);
-            navigation.navigate('ViewPatients', {user_id: json.user_id});
-          } else {
-            errorMessage = 'user do not exist';
-            console.log(errorMessage);
-            Toast.show('user do not exist', Toast.LONG);
-          }
-        })
-        .catch((error) => {
-          errorMessage = error.message;
+    fetch(url + `/users/${username}/${password}`)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.validated === 'true') {
+          errorMessage = 'good';
           console.log(errorMessage);
-          Toast.show(errorMessage, Toast.LONG);
-        });
-      setChecking(false);
-    }
+          navigation.navigate('ViewPatients', {user_id: json.user_id});
+        } else {
+          errorMessage = 'user do not exist';
+          console.log(errorMessage);
+          Toast.show('user do not exist', Toast.LONG);
+        }
+      })
+      .catch((error) => {
+        errorMessage = error.message;
+        console.log(errorMessage);
+        Toast.show(errorMessage, Toast.LONG);
+      });
   };
 
   return (
@@ -61,7 +57,7 @@ export default function SignIn({navigation}) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => chackInputAndSignIn()}>
+        onPress={() => chackInputAndSignIn}>
         <Text style={styles.buttonText}>Press Here</Text>
       </TouchableOpacity>
 

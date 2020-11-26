@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
-var url = 'https://patientrecordsgroup.herokuapp.com';
+var url = 'http://127.0.0.1:3009';
 
 function checkemail(email) {
   // TODO:

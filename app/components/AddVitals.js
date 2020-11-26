@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   Platform,
@@ -12,12 +11,10 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Toast from 'react-native-simple-toast';
 
-var url = 'https://patientrecordsgroup.herokuapp.com';
+var url = 'http://127.0.0.1:3009';
 // screen for adding and editing vital
 export default function AddVitals({navigation, route}) {
   var vital = route.params.vital;
-
-  let errorMessage = '';
 
   //hooks for vitals info
   const [bloodPresure, setBloodPresure] = useState(vital.bloodPresure || '');
@@ -58,9 +55,7 @@ export default function AddVitals({navigation, route}) {
       bloodOxigen.length === 0 &&
       hearthRate.length === 0
     ) {
-      errorMessage = 'no data';
-      console.log(errorMessage);
-      Toast.show(errorMessage, Toast.LONG);
+      Toast.show('no data', Toast.LONG);
     } else {
       let vital_id = vital._id !== undefined ? `/${vital._id}` : '';
       let method = vital._id !== undefined ? 'PUT' : 'POST';
@@ -81,49 +76,14 @@ export default function AddVitals({navigation, route}) {
       })
         .then((response) => response.json())
         .then((json) => {
-          errorMessage = 'all good';
           navigation.navigate('ViewVitals', {
             vital: json,
             patient: route.params.patient,
           });
         })
-        .catch((error) => {
-          errorMessage = error.message;
-          console.log(errorMessage);
-          Toast.show(errorMessage, Toast.LONG);
-        });
+        .catch((error) => Toast.show(error.message, Toast.LONG));
     }
   };
-
-  const deleteVital = () => {
-    if (vital._id !== undefined){
-      fetch(
-        url + `/patients/${route.params.patient._id}/records/${vital._id}`,
-        {
-        method: 'DELETE',
-      })
-      .catch((error) => {
-        errorMessage = error.message;
-        Toast.show(errorMessage, Toast.LONG);
-      });
-    }
-    navigation.navigate('ViewPatient', {patient: route.params.patient})
-  }
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={{alignSelf: 'flex-end'}}
-          onPress={() => deleteVital()}>
-          <Image
-            source={require('../assets/trash-bin.png')}
-            style={styles.image}
-          />
-        </TouchableOpacity>
-      ),
-    });
-  });
 
   return (
     <View style={styles.container}>
@@ -218,13 +178,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 22,
-  },
-  image: {
-    resizeMode: 'center',
-    paddingVertical: 5,
-    height: 50,
-    width: 50,
-    margin: 10,
   },
   button: {
     backgroundColor: 'crimson',

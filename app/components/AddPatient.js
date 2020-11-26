@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
-var url = 'https://patientrecordsgroup.herokuapp.com';
+var url = 'http://127.0.0.1:3009';
 
 // screen for adding and editing patient
 export default function AddPatient({navigation, route}) {
@@ -31,11 +31,9 @@ export default function AddPatient({navigation, route}) {
     patient.in_critical_condition || false,
   );
 
-  let errorMessage = '';
   function save() {
+    // TODO: normal check
     if (name.length === 0) {
-      errorMessage = 'no name';
-      Toast.show(errorMessage, Toast.LONG);
       return;
     }
     let url_id = patient._id !== undefined ? `/${patient._id}` : '';
@@ -50,7 +48,7 @@ export default function AddPatient({navigation, route}) {
       user_id: route.params.user_id,
       in_critical_condition: in_critical_condition,
     };
-    
+
     fetch(url + `/patients${url_id}`, {
       method: method,
       headers: {
@@ -61,13 +59,9 @@ export default function AddPatient({navigation, route}) {
     })
       .then((response) => response.json())
       .then((json) => {
-        errorMessage = 'all good';
         navigation.navigate('ViewPatient', {patient: json});
       })
-      .catch((error) => {
-        errorMessage = error.message;
-        Toast.show(errorMessage, Toast.LONG);
-      });
+      .catch((error) => Toast.show(error.message, Toast.LONG));
   }
 
   React.useLayoutEffect(() => {

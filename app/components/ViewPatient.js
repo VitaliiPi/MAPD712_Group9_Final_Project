@@ -11,7 +11,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-var url = 'https://patientrecordsgroup.herokuapp.com';
+import {HeaderBackButton} from '@react-navigation/stack';
+var url = 'http://127.0.0.1:3009';
 
 // provide information about patient, and his vitals
 export default function ViewPatient({navigation, route}) {
@@ -43,8 +44,8 @@ export default function ViewPatient({navigation, route}) {
       return true;
     };
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
 
     return () => backHandler.remove();
