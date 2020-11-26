@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
@@ -35,10 +36,12 @@ export default function ViewPatient({ navigation, route })  {
 
   React.useLayoutEffect(()=>{
     navigation.setOptions({
-      headerLeft:()=>(
-        <HeaderBackButton
-            onPress={ () => {navigation.navigate('ViewPatients') } }
-        />
+      headerRight:()=>(
+        <View 
+          style={{alignSelf: 'flex-end'}}
+        >
+          <Image source={patient.in_critical_condition ? require('../assets/critical_condition.png'): require('../assets/ok_state.jpg') } style={styles.image} />
+        </View>
       )
     })
   })
@@ -127,6 +130,12 @@ const styles = StyleSheet.create(
       justifyContent: 'space-between',
       marginVertical: 8,
     },
+    image:{
+      resizeMode: "center",
+      paddingVertical: 5,
+      height: 60,
+      width: 60,
+    },
     firstColumn: {
       fontFamily: "serif",
       flex: 3,
@@ -145,8 +154,9 @@ const styles = StyleSheet.create(
     button:{
       backgroundColor: 'crimson',
       borderRadius:25,
-      padding: 6,
-      marginVertical: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 6,
+      margin: 5,
     },
     leftHalf:{
       alignSelf: 'flex-end',
@@ -156,7 +166,7 @@ const styles = StyleSheet.create(
       fontFamily: "serif",
       color: "white",
       alignSelf: 'center',
-      fontSize: 22,
+      fontSize: 24,
     },
     bottom: {
       justifyContent: 'flex-end',
