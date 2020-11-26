@@ -8,38 +8,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 var url = "http://127.0.0.1:3009"
 
-function save(navigation, name, room, address, notes, phone_number, _id, user_id, state){
-  // TODO: normal check
-  if (name.length==0) return
-  let url_id = (_id != undefined) ? `/${_id}` : ''
-  let method = (_id != undefined) ? `PUT` : 'POST'
-  let patient = {name: name,
-                room: room,
-                address: address,
-                notes: notes,
-                phone_number: phone_number,
-                user_id: user_id,
-                in_critical_condition: state
-                }
-  fetch(url + `/patients${url_id}`, {
-    method: method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(patient)
-  })
-  .then((response) => response.json())
-  .then((json)=> {patient = json})
-  .catch((error) => console.error(error))
-  .then( () => {
-    navigation.navigate( "ViewPatient", { patient: patient } )
-    }
-  );
-}
+
 
 // screen for adding and editing patient
 export default function AddPatient({ navigation, route })  {
@@ -52,6 +25,33 @@ export default function AddPatient({ navigation, route })  {
   const [notes, setNotes] = useState(patient.notes || '');
   const [phone_number, setPhone] = useState(patient.phone || '');
   const [in_critical_condition, setCriticalcondition] = useState(patient.in_critical_condition || false);
+
+  function save(navigation, name, room, address, notes, phone_number, _id, user_id, state){
+    // TODO: normal check
+    if (name.length==0) return
+    let url_id = (_id != undefined) ? `/${_id}` : ''
+    let method = (_id != undefined) ? `PUT` : 'POST'
+    let patient = {name: name,
+                  room: room,
+                  address: address,
+                  notes: notes,
+                  phone_number: phone_number,
+                  user_id: user_id,
+                  in_critical_condition: state
+                  }
+    fetch(url + `/patients${url_id}`, {
+      method: method,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(patient)
+    })
+    .then((response) => response.json())
+    .then((json)=> {patient = json})
+    .then( () => {navigation.navigate( "ViewPatient", { patient: patient } )})
+    .catch((error) => Toast.show(error.message, Toast.LONG));
+  }
 
 
   React.useLayoutEffect(()=>{
