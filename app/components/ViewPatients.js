@@ -17,12 +17,18 @@ export default function ViewPatients({ navigation, route })  {
   const [patientsList, setPatientsList] = useState([]);
   console.log("view all patients", );
   // load list of patients
-  useEffect(() => { // TODO: change to oue domain
+  const loadData = () => {
     fetch(url + `/patients`)
       .then((response) => response.json())
       .then((json)=>setPatientsList(json))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
+    }
+
+    useEffect(() => { // TODO: change to oue domain
+      const unsubscribe = navigation.addListener('focus', () => {
+        loadData()
+      });
   }, []);
 
   React.useLayoutEffect(()=>{
@@ -35,10 +41,10 @@ export default function ViewPatients({ navigation, route })  {
         </TouchableOpacity>
       )
     })
-  }
+  
+  })
 
-
-  )
+  
   return (
     <View style={styles.container}>
 
