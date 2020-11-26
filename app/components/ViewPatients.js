@@ -12,6 +12,18 @@ import {
 
 var url = "http://127.0.0.1:3009"
 
+const compare = (a, b) => {
+  if (a.in_critical_condition && !b.in_critical_condition ||
+      a.in_critical_condition==b.in_critical_condition && a.name < b.name){
+      return -1
+  }
+  if (b.in_critical_condition && !a.in_critical_condition ||
+      a.in_critical_condition==b.in_critical_condition && a.name > b.name){
+    return 1  
+  }
+  return 0
+}
+
 export default function ViewPatients({ navigation, route })  {
   const [isLoading, setLoading] = useState(true);
   const [patientsList, setPatientsList] = useState([]);
@@ -56,7 +68,7 @@ export default function ViewPatients({ navigation, route })  {
 
         {isLoading ? <ActivityIndicator/> : (
           <FlatList
-            data={patientsList}
+          data={patientsList.sort(compare)}
             renderItem={({ item }) => (
               <ListItem item={item} navigation={navigation} user_id = {route.params.user_id}/>
             )}
